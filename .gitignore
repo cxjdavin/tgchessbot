@@ -1,5 +1,7 @@
 # Ignore log files
 *.txt
+__pycache__
+matches
 
 *.DS_Store
 .AppleDouble

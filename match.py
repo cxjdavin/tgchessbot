@@ -82,10 +82,6 @@ class Match():
         # python-chess uses O instead of 0
         m = m.replace('0', 'O')
 
-        # Making a move invalidates any existing draw offers
-        if self.drawoffer != None:
-            self.reject_draw()
-
         # Check if move is in SAN.
         # python-chess: Raises ValueError if the SAN is invalid or ambiguous.
         try:
@@ -99,6 +95,10 @@ class Match():
                 # If neither forms or illegal, the move is invalid
                 return "Invalid"
         
+        # Making a move invalidates any existing draw offers
+        if self.drawoffer != None:
+            self.reject_draw()
+            
         # At this point, "move" is bound to be valid and legal.
         # i.e. (move in self.board.legal_moves) == True
         self.board.push(move)
@@ -113,7 +113,6 @@ class Match():
     def reject_draw(self):
         '''Offer rejected either explicitly or when a move is made'''
         self.drawoffer = None
-        bot.sendMessage(self.chat_id, 'Draw offer rejected/cancelled.')
 
     # Return an image
     def print_board(self, chat_id):

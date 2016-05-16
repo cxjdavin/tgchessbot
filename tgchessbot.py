@@ -149,8 +149,10 @@ class tgchessBot(telepot.Bot):
             bot.sendMessage(chat_id, self.helpsheet, parse_mode = "Markdown", disable_web_page_preview = True)
         elif tokens[0] == "/create" or tokens[0] == "/create@tgchessbot":
             # !create <current player color: white/black>
+            if len(tokens) < 2:
+                bot.sendMessage(chat_id, "Incorrect usage. `Usage: /create <White/Black>`. E.g. `/create white`", parse_mode='Markdown')
             tokens[1] = tokens[1].lower()
-            if len(tokens) < 2 or (tokens[1] != "white" and tokens[1] != "black"):
+            if tokens[1] != "white" and tokens[1] != "black":
                 bot.sendMessage(chat_id, "Incorrect usage. `Usage: /create <White/Black>`. E.g. `/create white`", parse_mode='Markdown')
             elif match != None:
                 bot.sendMessage(chat_id, "There is already a chess match going on.")
@@ -195,11 +197,15 @@ class tgchessBot(telepot.Bot):
             elif match.get_turn_id() != sender_id:
                 bot.sendMessage(chat_id, "It's not your turn.")
             else:
+                if match.drawoffer != None:
+                    had_offer = True
                 move = ''.join(tokens[1:])
                 res = match.make_move(move)
                 if res == "Invalid":
                     bot.sendMessage(chat_id, "`{}` is not a valid move.".format(move), parse_mode = "Markdown")
                 else:
+                    if had_offer:
+                        bot.sendMessage(chat_id, 'Draw offer cancelled.')
                     filename = match.print_board(chat_id)
                     if res == "Check":
                         bot.sendPhoto(chat_id, open(filename, "rb"), caption = "Check!")
@@ -221,7 +227,7 @@ class tgchessBot(telepot.Bot):
                 bot.sendMessage(chat_id, "It's not your turn.")
             else:
                 match.offer_draw(sender_id)
-                bot.sendMessage(chat_id, "{} offers a draw.".format(sender_name))
+                bot.sendMessage(chat_id, "{} ({}) offers a draw.".format(sender_username, match.get_color(sender_id)))
         elif tokens[0] == "/rejectdraw" or tokens[0] == "/rejectdraw@tgchessbot": # Reject draw offer
             if match == None:
                 bot.sendMessage(chat_id, "There is no chess match going on.")
@@ -229,6 +235,7 @@ class tgchessBot(telepot.Bot):
                 bot.sendMessage(chat_id, "You are not involved in the chess match.")
             elif match.drawoffer == match.get_opp_id(sender_id):
                 match.reject_draw()
+                bot.sendMessage(chat_id, 'Draw offer cancelled by {} ({}).'.format(sender_username, match.get_color(sender_id)))
             else:
                 bot.sendMessage(chat_id, "There is no draw offer to reject.")
         elif tokens[0] == "/claimdraw" or tokens[0] == "/claimdraw@tgchessbot": # Either due to offer or repeated moves
