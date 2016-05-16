@@ -197,6 +197,7 @@ class tgchessBot(telepot.Bot):
             elif match.get_turn_id() != sender_id:
                 bot.sendMessage(chat_id, "It's not your turn.")
             else:
+                had_offer = False
                 if match.drawoffer != None:
                     had_offer = True
                 move = ''.join(tokens[1:])
