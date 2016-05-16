@@ -1,8 +1,24 @@
 # About
 @tgchessbot is a Telegram bot. You can play chess using @tgchessbot. To play with friends, create a group and invite @tgchessbot into it. If you wish to play alone, talk to @tgchessbot on a 1-on-1 private message.
 
-# To be done / Coming soon
-In-depth explanation of my code base + how was my first experience building a Telegram bot (including tips and tricks + a guide to get you started!)
+# Hosting @tgchessbot on your own server
+
+* Register a bot with the [BotFather](https://telegram.me/botfather)
+* After installing `Python3` and `pip` on a server, perform the following:
+
+```
+sudo pip3 install telepot
+sudo pip3 install python-chess
+sudo apt-get install libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms1-dev libwebp-dev tcl8.5-dev tk8.5-dev
+sudo pip3 install Pillow
+```
+
+* Download the code from my [Github repo](https://github.com/cxjdavin/tgchessbot)
+* Replace the `telegram_bot_token` variable (near the bottom of `tgchessbot.py`) with your own bot token from BotFather
+* Shoot up a `screen` and run `python3 tgchessbot.py`. Detach using `Ctrl + A + D`. The bot will continue running and handle messages in the background as long as your server is up.
+
+# Blog post
+To learn more, read the blog post here: http://davinchoo.com/2016/05/16/telegram-bot-experience/
 
 # Acknowledgements
 This bot is built with the help of [`telepot`](https://github.com/nickoala/telepot), [`python-chess`](https://github.com/niklasf/python-chess) and [`Pillow`](https://pillow.readthedocs.io/en/3.2.x/), with chess piece images from [Cburnett](https://en.wikipedia.org/wiki/User:Cburnett) on [Wikipedia](https://en.wikipedia.org/wiki/Chess_piece).
