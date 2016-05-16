@@ -284,8 +284,7 @@ class tgchessBot(telepot.Bot):
                 print(query_string, opt["id"], query_string in opt["id"])
             return ans
 
-        if query_string != '':
-            self._answerer.answer(msg, compute_answer)
+        self._answerer.answer(msg, compute_answer)
 
     def on_chosen_inline_result(self, msg):
         '''Just logs the message. Does nothing for now'''
