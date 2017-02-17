@@ -44,7 +44,7 @@ class tgchessBot(telepot.Bot):
         helpsheet += "`/resign`: Resign from the match\n"
         helpsheet += "`/stats`: View your game stats across all matches\n\n"
         helpsheet += "If there are multiple bots, append `@tgchessbot` behind your commands. E.g. `/move@tgchessbot e4`"
-        
+
         return startsheet, helpsheet
 
     def save_state(self):
@@ -138,7 +138,7 @@ class tgchessBot(telepot.Bot):
         # if chat_id == sender_id, then it's a human-to-bot 1-on-1 chat
         # if chat_id != sender_id, then chat_id is group chat id
         print('Chat Message:', content_type, chat_type, chat_id, msg[content_type])
-        
+
         tokens = msg[content_type].split(" ")
         match = self.gamelog[chat_id] if chat_id in self.gamelog.keys() else None
         players = match.get_players() if match != None else None
@@ -177,7 +177,7 @@ class tgchessBot(telepot.Bot):
                 # Print starting game state
                 filename = match.print_board(chat_id)
                 turn_id = match.get_turn_id()
-                bot.sendPhoto(chat_id, open(filename, "rb"), caption = "{} ({}) to move.".format(match.get_name(turn_id), match.get_color(turn_id)))
+                bot.sendPhoto(chat_id, open(filename, "rb"), caption = "@{} ({}) to move.".format(match.get_name(turn_id), match.get_color(turn_id)))
         elif tokens[0] == "/show" or tokens[0] == "/show@tgchessbot":
             if match == None:
                 bot.sendMessage(chat_id, "There is no chess match going on.")
@@ -218,7 +218,7 @@ class tgchessBot(telepot.Bot):
                         bot.sendPhoto(chat_id, open(filename, "rb"), caption = "Check!")
                     else:
                         turn_id = match.get_turn_id()
-                        bot.sendPhoto(chat_id, open(filename, "rb"), caption = "{} ({}) to move.".format(match.get_name(turn_id), match.get_color(turn_id)))
+                        bot.sendPhoto(chat_id, open(filename, "rb"), caption = "@{} ({}) to move.".format(match.get_name(turn_id), match.get_color(turn_id)))
         elif tokens[0] == "/offerdraw" or tokens[0] == "/offerdraw@tgchessbot": # Offer a draw
             if match == None:
                 bot.sendMessage(chat_id, "There is no chess match going on.")
@@ -264,7 +264,7 @@ class tgchessBot(telepot.Bot):
             else:
                 pstats = self.statslog[sender_id]
                 bot.sendMessage(chat_id, "{}: {} wins, {} draws, {} losses.".format(sender_username, pstats[0], pstats[1], pstats[2]))
-    
+
     def on_callback_query(self, msg):
         '''Just logs the message. Does nothing for now'''
         self.msglog.append(msg)
