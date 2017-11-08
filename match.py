@@ -102,8 +102,11 @@ class Match():
         # At this point, "move" is bound to be valid and legal.
         # i.e. (move in self.board.legal_moves) == True
         self.board.push(move)
-        if self.board.is_check():       return "Check"
-        elif self.board.is_checkmate(): return "Checkmate"
+        # The order of testing for check and checkmate is important here!
+        # That is because Board.is_check() will also return true if the game position is actually checkmate.
+        # See https://github.com/niklasf/python-chess/blob/0d007c23f593957f049b16df105d82d447e5833b/chess/__init__.py#L1659
+        if self.board.is_checkmate(): return "Checkmate"
+        elif self.board.is_check(): return "Check"
         elif self.board.is_stalemate(): return "Stalemate"
 
     def offer_draw(self, sender_id):
