@@ -8,7 +8,7 @@ class Renderer():
 	
 	def __init__(self):
 		'''Pre-draw an empty board and pre-load the pieces'''
-		self.grid_size = (20,20)
+		self.grid_size = (40,40)
 		self.board = self.draw_empty_board()
 		self.piece_locations = './pieces'
 		self.pieces, self.masks = self.load_pieces()
@@ -43,7 +43,7 @@ class Renderer():
 		letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 		axes = [[str(9-i), j * self.grid_size[0], i * self.grid_size[1]] for i in range(1,9) for j in [0,9]]
 		axes += [[letters[i-1], i * self.grid_size[0], j * self.grid_size[1]] for i in range(1,9) for j in [0,9]]
-		font = ImageFont.truetype("./fonts/Helvetica Bold.ttf", 10)
+		font = ImageFont.truetype("./fonts/Helvetica Bold.ttf", 20)
 		for [txt, x, y] in axes:
 			# Add __ * self.grid_size to try to center the text
 			ImageDraw.Draw(board).text((x + 0.35*self.grid_size[0], y + 0.35*self.grid_size[1]), txt, font=font)
