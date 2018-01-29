@@ -6,8 +6,9 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 class Renderer():
 	'''Renderer class that will convert chess positions to images'''
 	
-	def __init__(self):
+	def __init__(self, turn=True):
 		'''Pre-draw an empty board and pre-load the pieces'''
+		self.turn = turn
 		self.grid_size = (40,40)
 		self.board = self.draw_empty_board()
 		self.piece_locations = './pieces'
@@ -41,7 +42,8 @@ class Renderer():
 
 		# Write down axis
 		letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-		axes = [[str(9-i), j * self.grid_size[0], i * self.grid_size[1]] for i in range(1,9) for j in [0,9]]
+		letters = letters if self.turn else letters[::-1]
+		axes = [[str((9-i if self.turn else i)), j * self.grid_size[0], i * self.grid_size[1]] for i in range(1,9) for j in [0,9]]
 		axes += [[letters[i-1], i * self.grid_size[0], j * self.grid_size[1]] for i in range(1,9) for j in [0,9]]
 		font = ImageFont.truetype("./fonts/Helvetica Bold.ttf", 20)
 		for [txt, x, y] in axes:
@@ -73,6 +75,7 @@ class Renderer():
 		'''Draws a chess board position from a given FEN chess position'''
 		# Replace numbers in fen with spaces
 		print(fen)
+		fen = fen if self.turn else fen[::-1]
 		points = filter(lambda x: x[0] != ' ',
 			[(p, pt) for (p, pt) in zip(self.expand_fen(fen),
 										[(r,c) for c in range(1,9) for r in range(1,9)])])
