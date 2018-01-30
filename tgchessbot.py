@@ -20,7 +20,7 @@ class tgchessBot(telepot.Bot):
         startsheet += "*About*\n\n"
         startsheet += "You can play chess using @tgchessbot. To play with friends, create a group and invite @tgchessbot into it. If you wish to play alone, talk to @tgchessbot on a 1-on-1 private message.\n\n"
         startsheet += "_How to play_: Someone creates a game and picks a colour (white or black). Someone else (could be the same person) joins and is automatically assigned the other side.\n\n"
-        startsheet += "_Make your best move_: Make a move by typing `/move <your move>`. @tgchessbot is able to recognise both SAN and UCI notations. E.g. `/move e4` or `/move e2e4`, `/move Nf3` or `/move g1f3`\n\n"
+        startsheet += "_Make your best move_: Make a move by typing `/move <your move>` or just `<your move>`. @tgchessbot is able to recognise both SAN and UCI notations. E.g. `/move e4` or `/move e2e4`, `/move Nf3` or `g1f3`\n\n"
         startsheet += "Every chat conversation is capped to have only 1 match going on at any point in time to avoid confusion (In case multiple people try to play matches simultaneously in the same group chat). For a more enjoyable experience, you may wish to create a group chat with 3 members: You, your friend/opponent and @tgchessbot\n\n"
         startsheet += "*Inline Commands*\n\n"
         startsheet += "You may also make use of inline commands by typing `@tgchessbot <command>`.\n"
@@ -37,7 +37,7 @@ class tgchessBot(telepot.Bot):
         helpsheet += "`/create <white/black>`: Creates a chess match with your preferred colour. E.g. `/create white`\n"
         helpsheet += "`/join`: Join the existing match\n"
         helpsheet += "`/show`: Show current board state\n"
-        helpsheet += "`/move <move>`: Make a move using SAN or UCI. E.g. `/move e4` or `/move e2e4`, `/move Nf3` or `/move g1f3`. To learn more: [https://en.wikipedia.org/wiki/Algebraic_notation_(chess)]\n"
+        helpsheet += "`/move <move>` or `<move>`: Make a move using SAN or UCI. E.g. `/move e4` or `/move e2e4`, `/move Nf3` or `g1f3`. To learn more: [https://en.wikipedia.org/wiki/Algebraic_notation_(chess)]\n"
         helpsheet += "`/offerdraw`: Offer a draw. Making a move automatically cancels any existing draw offers.\n"
         helpsheet += "`/rejectdraw`: Reject opponent's draw offer. Making a move automatically rejects any existing draw offers.\n"
         helpsheet += "`/claimdraw`: Accept a draw offer or claim a draw when `fifty-move rule` or `threefold repetition` is met. To learn more: [https://en.wikipedia.org/wiki/Draw_(chess)]\n"
@@ -187,10 +187,8 @@ class tgchessBot(telepot.Bot):
                 filename = match.print_board(chat_id)
                 turn_id = match.get_turn_id()
                 bot.sendPhoto(chat_id, open(filename, "rb"), caption = "{} ({}) to move.".format(match.get_name(turn_id), match.get_color(turn_id)))
-        elif tokens[0] == "/move" or tokens[0] == "/move@tgchessbot": # !move <SAN move>
-            if len(tokens) < 2:
-                bot.sendMessage(chat_id, "Incorrect usage. `Usage: /move <SAN or UCI move>`. E.g. `/move e4` or `/move e2e4`, `/move Nf3` or `/move g1f3`", parse_mode = "Markdown")
-            elif match == None:
+        elif tokens[0] == "/move" or tokens[0] == "/move@tgchessbot" or (match and match.parse_move(tokens[0])): # !move <SAN move>
+            if match == None:
                 bot.sendMessage(chat_id, "There is no chess match going on.")
             elif not self.is_in_game(players, sender_id):
                 bot.sendMessage(chat_id, "You are not involved in the chess match.")
@@ -200,7 +198,7 @@ class tgchessBot(telepot.Bot):
                 had_offer = False
                 if match.drawoffer != None:
                     had_offer = True
-                move = ''.join(tokens[1:])
+                move = tokens[0] if match.parse_move(tokens[0]) else ''.join(tokens[1:])
                 res = match.make_move(move)
                 if res == "Invalid":
                     bot.sendMessage(chat_id, "`{}` is not a valid move.".format(move), parse_mode = "Markdown")

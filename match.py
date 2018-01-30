@@ -77,7 +77,7 @@ class Match():
         else:
             return None
 
-    def make_move(self, m):
+    def parse_move(self, m):
         '''Feed move into python-chess to simulate'''
         # python-chess uses O instead of 0
         m = m.replace('0', 'O')
@@ -93,7 +93,13 @@ class Match():
                 move = self.board.parse_uci(m)
             except ValueError:
                 # If neither forms or illegal, the move is invalid
-                return "Invalid"
+                return None
+        return move
+
+    def make_move(self, m):
+        move = self.parse_move(m)
+        if not move:
+            return "Invalid"
         
         # Making a move invalidates any existing draw offers
         if self.drawoffer != None:
