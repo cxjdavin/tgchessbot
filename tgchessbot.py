@@ -210,7 +210,7 @@ class tgchessBot(telepot.Bot):
                     filename = match.print_board(chat_id)
                     if res == "Checkmate":
                         bot.sendPhoto(chat_id, open(filename, "rb"), caption = "Checkmate!")
-                        self.game_end(chat_id, players, match.get_own_color())
+                        self.game_end(chat_id, players, match.get_color(sender_id))
                     elif res == "Stalemate":
                         bot.sendPhoto(chat_id, open(filename, "rb"), caption = "Stalemate!")
                         self.game_end(chat_id, players, "Draw")
