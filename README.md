@@ -21,3 +21,5 @@ To learn more, read the blog post here: http://davinchoo.com/project/tgchess/
 
 # Acknowledgements
 This bot is built with the help of [`telepot`](https://github.com/nickoala/telepot), [`python-chess`](https://github.com/niklasf/python-chess) and [`Pillow`](https://pillow.readthedocs.io/en/3.2.x/), with chess piece images from [Cburnett](https://en.wikipedia.org/wiki/User:Cburnett) on [Wikipedia](https://en.wikipedia.org/wiki/Chess_piece).
+
+Many thanks to [`vesatoivonen`](https://github.com/vesatoivonen) for useful suggestions and bug fixes.
