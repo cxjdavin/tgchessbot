@@ -126,7 +126,7 @@ class Match():
     # Return an image
     def print_board(self, chat_id):
         '''Sends fen to renderer class to draw current chessboard'''
-        renderer = Renderer()
+        renderer = Renderer(self.board.turn)
         filename = './matches/{}.jpg'.format('tgchessbot_'+str(chat_id))
         fen = self.board.fen().split()[0]
         img = renderer.draw_fen(fen).save(filename, "JPEG")
