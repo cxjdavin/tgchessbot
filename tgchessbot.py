@@ -242,8 +242,6 @@ class tgchessBot(telepot.Bot):
                 bot.sendMessage(chat_id, "There is no chess matches going on.")
             elif not self.is_in_game(players, sender_id):
                 bot.sendMessage(chat_id, "You are not involved in the chess match.")
-            elif match.get_turn_id() != sender_id:
-                bot.sendMessage(chat_id, "It's not your turn.")
             elif match.board.can_claim_draw() or match.drawoffer == match.get_opp_id(sender_id):
                 self.game_end(chat_id, players, "Draw")
             else:
