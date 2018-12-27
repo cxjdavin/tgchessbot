@@ -1,0 +1,14 @@
+version: "2"
+services:
+  tgchessbot:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    restart: always
+    env_file:
+      - ".env"
+      # You must provide this variables:
+      # TOKEN=11111111:BBDDJpKs_vZJ09NиKJDJDNdjB28efNZjlI
+      # BOT_ID=@yourbotidbot
+      # Optional:
+      # HTTPS_PROXY=https://host:port

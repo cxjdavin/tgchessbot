@@ -16,6 +16,17 @@ sudo pip3 install Pillow
 * Replace the `telegram_bot_token` variable (near the bottom of `tgchessbot.py`) with your own bot token from BotFather
 * Shoot up a `screen` and run `python3 tgchessbot.py`. Detach using `Ctrl + A + D`. The bot will continue running and handle messages in the background as long as your server is up.
 
+# Deploy with docker
+
+* Fill .env file 
+* Build and start container:
+
+```
+docker-compose build
+docker-compose up -d
+```
+
+
 # Blog post
 To learn more, read the blog post here: http://davinchoo.com/project/tgchess/
 
